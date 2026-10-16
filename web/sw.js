@@ -1,4 +1,4 @@
-const CACHE='halo-calc-v2.0.0';
+const CACHE='halo-calc-v2.0.1';
 const FILES=['./','./index.html','./style.css','./app.js','./engine.js','./store.js','./manifest.webmanifest','./assets/wing.svg','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png','./assets/click.mp3','./assets/icons/crimson-192.png','./assets/icons/crimson-512.png','./assets/icons/mono-192.png','./assets/icons/mono-512.png','./assets/icons/seal-192.png','./assets/icons/seal-512.png','./assets/icons/monogram-192.png','./assets/icons/monogram-512.png','./assets/icons/eclipse-192.png','./assets/icons/eclipse-512.png','./manifest-crimson.webmanifest','./manifest-mono.webmanifest','./manifest-seal.webmanifest','./manifest-monogram.webmanifest','./manifest-eclipse.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>(k.startsWith('bloody-calc-')||k.startsWith('halo-calc-'))&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

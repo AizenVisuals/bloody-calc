@@ -11,6 +11,14 @@ android {
     }
     sourceSets["main"].assets.srcDirs("../../web")
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("${System.getProperty("user.home")}/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
     buildTypes { getByName("release") { isMinifyEnabled = false } }
 }
 dependencies { implementation("androidx.webkit:webkit:1.12.1") }

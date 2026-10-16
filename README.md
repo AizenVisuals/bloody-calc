@@ -12,7 +12,7 @@ O app é gratuito, funciona offline e não tem anúncios nem cadastro. É um pro
 2. Baixe `Halo-Calc.apk` na versão mais recente.
 3. Abra o arquivo no celular e permita a instalação pelo navegador ou gerenciador de arquivos quando o Android pedir.
 
-Esta versão é de teste, distribuída diretamente pelo GitHub. Ainda não publiquei na Play Store. Para atualizar, instale o novo APK por cima do anterior. Recomendo exportar um backup nos ajustes antes de atualizar.
+Esta versão é de teste, distribuída diretamente pelo GitHub. Ainda não publiquei na Play Store. Para atualizar, instale o novo APK por cima do anterior quando a assinatura for a mesma. Os builds até o 6 foram gerados com chaves diferentes por uma falha no cache: para migrar dessas versões, exporte um backup nos ajustes, reinstale e restaure o backup.
 
 ## O que tem no app
 

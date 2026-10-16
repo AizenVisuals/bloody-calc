@@ -27,7 +27,13 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: ~/.android/debug.keystore
-          key: bloody-calc-personal-debug-keystore-v1
+          key: halo-calc-personal-debug-keystore-v2
+      - name: Prepare persistent test signing key
+        run: |
+          mkdir -p "$HOME/.android"
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'

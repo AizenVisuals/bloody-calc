@@ -5,6 +5,7 @@ import {JSDOM} from 'jsdom';
 const dom=new JSDOM(readFileSync(new URL('../web/index.html',import.meta.url),'utf8'),{url:'https://example.test/halo/'});
 for(const key of ['window','document','localStorage','FormData','HTMLElement'])globalThis[key]=dom.window[key];
 Object.defineProperty(globalThis,'navigator',{value:dom.window.navigator,configurable:true});
+Object.defineProperty(navigator,'languages',{value:['pt-BR'],configurable:true});
 globalThis.confirm=()=>true;window.scrollTo=()=>{};
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false};
 const interval=globalThis.setInterval;globalThis.setInterval=(...args)=>{const h=interval(...args);h.unref();return h};

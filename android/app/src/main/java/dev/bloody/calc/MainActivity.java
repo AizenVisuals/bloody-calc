@@ -23,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 /** Offline UI. No INTERNET permission. Bridge is exposed only to bundled appassets. */
 public final class MainActivity extends Activity {
     private WebView web;
+    private volatile String appLanguage = java.util.Locale.getDefault().getLanguage();
+    private String localized(String pt, String en, String es) { return "en".equals(appLanguage) ? en : "es".equals(appLanguage) ? es : pt; }
     private ValueCallback<Uri[]> fileCallback;
     private String pendingJson;
     private static final int PICK_FILE = 10, SAVE_FILE = 11;
@@ -53,7 +55,7 @@ public final class MainActivity extends Activity {
         });
         web.setWebChromeClient(new WebChromeClient() {
             @Override public boolean onJsConfirm(WebView v, String url, String message, JsResult result) {
-                new android.app.AlertDialog.Builder(MainActivity.this).setMessage(message).setPositiveButton("Confirmar", (d,w) -> result.confirm()).setNegativeButton("Cancelar", (d,w) -> result.cancel()).setOnCancelListener(d -> result.cancel()).show();return true;
+                new android.app.AlertDialog.Builder(MainActivity.this).setMessage(message).setPositiveButton(localized("Confirmar", "Confirm", "Confirmar"), (d,w) -> result.confirm()).setNegativeButton(localized("Cancelar", "Cancel", "Cancelar"), (d,w) -> result.cancel()).setOnCancelListener(d -> result.cancel()).show();return true;
             }
             @Override public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> callback, FileChooserParams params) {
                 if (fileCallback != null) fileCallback.onReceiveValue(null);
@@ -69,6 +71,10 @@ public final class MainActivity extends Activity {
         web.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }
     public final class Bridge {
+        @JavascriptInterface public String getDeviceLanguage() { return java.util.Locale.getDefault().toLanguageTag(); }
+        @JavascriptInterface public void setAppLanguage(String language) {
+            if ("pt".equals(language) || "en".equals(language) || "es".equals(language)) appLanguage = language;
+        }
         private final String[] keys = {"crimson", "mono", "amethyst", "glacier", "lime", "cyan", "rose", "graphite", "lavender"};
         private final String[] aliases = {"IconCrimson", "IconMono", "IconSeal", "IconMonogram", "IconEclipse", "IconCyan", "IconRose", "IconGraphite", "IconLavender"};
         @JavascriptInterface public String getLauncherIcon() {
@@ -99,14 +105,14 @@ public final class MainActivity extends Activity {
         }
 
         @JavascriptInterface public void copyText(String text) { runOnUiThread(() -> ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Halo Calc", text))); }
-        @JavascriptInterface public void shareText(String text) { runOnUiThread(() -> { Intent intent = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text); startActivity(Intent.createChooser(intent, "Compartilhar")); }); }
+        @JavascriptInterface public void shareText(String text) { runOnUiThread(() -> { Intent intent = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text); startActivity(Intent.createChooser(intent, localized("Compartilhar", "Share", "Compartir"))); }); }
         @JavascriptInterface public void vibrate() { Vibrator v = (Vibrator)getSystemService(VIBRATOR_SERVICE); if (v != null && v.hasVibrator()) v.vibrate(VibrationEffect.createOneShot(9, VibrationEffect.DEFAULT_AMPLITUDE)); }
         @JavascriptInterface public void saveJson(String filename, String json) { if(json.length()>5000000)return; runOnUiThread(() -> { pendingJson = json; Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("application/json").putExtra(Intent.EXTRA_TITLE, filename.replaceAll("[^a-zA-Z0-9._-]", "_")); startActivityForResult(intent, SAVE_FILE); }); }
     }
     @Override protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request,result,data);
         if(request==PICK_FILE && fileCallback!=null){ fileCallback.onReceiveValue(result==RESULT_OK && data!=null && data.getData()!=null?new Uri[]{data.getData()}:null);fileCallback=null; }
-        if(request==SAVE_FILE){if(result==RESULT_OK && data!=null && data.getData()!=null && pendingJson!=null){try(OutputStream out=getContentResolver().openOutputStream(data.getData())){if(out!=null)out.write(pendingJson.getBytes(StandardCharsets.UTF_8));Toast.makeText(this,"Backup salvo.",Toast.LENGTH_SHORT).show();}catch(Exception e){Toast.makeText(this,"Não foi possível salvar.",Toast.LENGTH_LONG).show();}}pendingJson=null;}
+        if(request==SAVE_FILE){if(result==RESULT_OK && data!=null && data.getData()!=null && pendingJson!=null){try(OutputStream out=getContentResolver().openOutputStream(data.getData())){if(out!=null)out.write(pendingJson.getBytes(StandardCharsets.UTF_8));Toast.makeText(this,localized("Backup salvo.", "Backup saved.", "Copia de seguridad guardada."),Toast.LENGTH_SHORT).show();}catch(Exception e){Toast.makeText(this,localized("Não foi possível salvar.", "Could not save.", "No se pudo guardar."),Toast.LENGTH_LONG).show();}}pendingJson=null;}
     }
     @Override public void onBackPressed() { web.evaluateJavascript("window.bloodyBack ? window.bloodyBack() : false", value -> { if(!"true".equals(value)) super.onBackPressed(); }); }
     @Override protected void onDestroy() { if(web!=null){web.removeJavascriptInterface("Android");web.destroy();}super.onDestroy(); }

@@ -16,6 +16,7 @@ Esta versão é de teste, distribuída diretamente pelo GitHub. Ainda não publi
 
 ## O que tem no app
 
+- Português, inglês e espanhol gratuitos, com detecção do idioma do aparelho e seleção em Ajustes → Idioma. Separadores numéricos e mensagens acompanham o idioma, sem alterar contas ou preferências salvas.
 - Calculadora com porcentagem, parênteses e resultado em tempo real.
 - Painel científico separado, com potência, raiz, funções trigonométricas e ângulos em graus ou radianos.
 - Histórico com busca, favoritos e reutilização de contas.

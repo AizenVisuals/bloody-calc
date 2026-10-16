@@ -2,7 +2,7 @@ name: Android APK
 on:
   push:
     branches: [main]
-    paths: ['web/**', 'android/**', 'tests/**', 'package.json', '.github/workflows/android.yml']
+    paths: ['web/**', 'android/**', 'tests/**', 'package.json', '.github/workflows/android.yml', 'scripts/restore-signing.py']
   workflow_dispatch:
 permissions:
   contents: write
@@ -24,16 +24,13 @@ jobs:
         with:
           packages: 'platform-tools platforms;android-35 build-tools;34.0.0'
           log-accepted-android-sdk-licenses: false
-      - uses: actions/cache@v4
-        with:
-          path: ~/.android/debug.keystore
-          key: halo-calc-personal-debug-keystore-v2
-      - name: Prepare persistent test signing key
+      - name: Restore the existing signing key from repository secrets
+        env:
+          HALO_SIGNING_BASE64: ${{ secrets.HALO_EXISTING_KEYSTORE_BASE64 }}
+          HALO_SIGNING_CERT_SHA256: ${{ secrets.HALO_EXISTING_CERT_SHA256 }}
         run: |
-          mkdir -p "$HOME/.android"
-          if [ ! -f "$HOME/.android/debug.keystore" ]; then
-            keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-          fi
+          python3 scripts/restore-signing.py "$RUNNER_TEMP/halo-signing.keystore"
+          echo "HALO_EXISTING_KEYSTORE_PATH=$RUNNER_TEMP/halo-signing.keystore" >> "$GITHUB_ENV"
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
@@ -51,4 +48,7 @@ jobs:
       - name: Publish personal test APK
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "build-${{ github.run_number }}" Halo-Calc.apk --title "Halo Calc · build ${{ github.run_number }}" --notes "APK de teste para uso pessoal. Não publicado na Play Store. Faça backup no app antes de trocar instalações." --prerelease
+        run: gh release create "build-${{ github.run_number }}" Halo-Calc.apk --title "Halo Calc · build ${{ github.run_number }}" --notes "APK de teste. Atualiza os builds 7 e seguintes com a mesma assinatura, sem desinstalar. Não publicado na Play Store." --prerelease
+      - name: Remove private signing material from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/halo-signing.keystore"

@@ -65,7 +65,7 @@ O projeto também inclui um PWA. Para publicar pelo GitHub Pages, configure **Se
 - Funções transcendentes e divisões periódicas podem gerar aproximações, sinalizadas com `≈`.
 - No Android, alguns launchers demoram para mostrar um ícone novo. No PWA, pode ser necessário reinstalar o atalho.
 - O cronômetro mede tempo pelo relógio do aparelho; mudanças manuais nesse relógio podem afetar uma contagem em andamento.
-- O APK atual usa assinatura de depuração para testes. O workflow reaproveita a chave em cache; perder esse cache pode exigir reinstalação. Uma publicação na loja terá assinatura de produção própria.
+- Os APKs de teste usam a mesma chave desde o build 7: as atualizações podem ser instaladas por cima, preservando os dados. A chave fica em um segredo do GitHub e tem uma cópia local protegida; a compilação confere o certificado e falha se a chave estiver ausente ou incorreta, em vez de gerar outra. O cache não participa da assinatura. Para a Play Store ainda precisamos preparar assinatura de produção e planejar a transição desta versão de testes.
 - O nome público é Halo Calc; o endereço do repositório ainda conserva o nome inicial.
 
 ## Desenvolvimento

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync, readdirSync} from 'node:fs';
+import {readFileSync} from 'node:fs';
 import {inflateSync} from 'node:zlib';
 
 const root = new URL('../', import.meta.url);
@@ -38,13 +38,11 @@ function png(path, size) {
 
 test('nove ícones web e Android têm PNG íntegro e a mesma arte em 512 px', () => {
   for (const key of variants) {
+    png(`web/assets/icons/halo-${key}-source.png`, 1254);
     png(`web/assets/icons/halo-${key}-192.png`, 192);
     const web = png(`web/assets/icons/halo-${key}-512.png`, 512);
     const android = png(`android/app/src/main/res/drawable-nodpi/halo_${key}.png`, 512);
     assert.deepEqual(web, android, key);
-  }
-  for (const name of readdirSync(new URL('web/assets/icons/', root))) {
-    if (name.startsWith('halo-') && name.endsWith('-source.png')) png(`web/assets/icons/${name}`, 1254);
   }
 });
 

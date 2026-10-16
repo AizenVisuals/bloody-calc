@@ -1,0 +1,8 @@
+{
+  "title": "Halo Calc",
+  "short_description": "Una calculadora que combina con tu móvil.",
+  "full_description": "Halo Calc reúne calculadora, panel científico y cronómetro en una interfaz que puedes personalizar.\n\nElige entre nueve temas, con opciones claras, pastel y grafito. Selecciona uno de los nueve iconos de la app independientemente del tema.\n\n• Porcentajes, paréntesis y resultados en tiempo real.\n• Panel científico con potencias, raíz y funciones trigonométricas.\n• Historial con búsqueda, favoritos y reutilización de cálculos.\n• Cronómetro con pausa, continuación y hasta 100 vueltas.\n• Portugués, inglés y español, con selección de idioma automática o manual.\n• Tamaño del texto, sonidos y vibración opcionales.\n• Exportación y restauración de copias de seguridad JSON.\n\nLa app Android funciona sin conexión, sin anuncios y sin registro. Tu historial y preferencias permanecen en tu dispositivo.\n\nMantén el botón de borrar durante 1,5 segundos para limpiar la expresión. Un toque corto borra un carácter.\n\nAlgunas funciones científicas y divisiones producen resultados aproximados, marcados con ≈. El cronómetro sigue el reloj del dispositivo; cambiarlo manualmente puede afectar el tiempo.\n\nCreado por Aizen Visuals.",
+  "support_email": "aizenvisuals.apps@gmail.com",
+  "category_suggestion": "Tools",
+  "privacy_policy": "https://aizenvisuals.github.io/bloody-calc/privacy-es.html"
+}

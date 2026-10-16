@@ -27,3 +27,11 @@ test('automatic English, decimal keypad, localized history, manual Spanish and P
  input('');$('#expression').focus();click('[data-key="1"]');click('[data-key="."]');click('[data-key="5"]');assert.equal($('#result').textContent,'1.5');
  language('auto');Object.defineProperty(navigator,'languages',{value:['es-MX'],configurable:true});window.dispatchEvent(new dom.window.Event('languagechange'));assert.equal(document.documentElement.lang,'es-ES');assert.equal(saved().language,'auto');
 });
+
+test('privacy is available offline in all languages and Back returns to settings',()=>{
+ for(const [lang,title] of [['pt','Privacidade'],['en','Privacy'],['es','Privacidad']]){
+  language(lang);click('[data-act=privacy]');assert.match($('#app').textContent,/aizenvisuals\.apps@gmail\.com/);
+  assert.equal($('h1').textContent,lang==='pt'?'Privacidade':title);
+  assert.equal(window.bloodyBack(),true);assert.ok($('#language'));assert.equal(saved().language,lang);
+ }
+});

@@ -5,3 +5,7 @@ android/**/build/
 *.apk
 *.keystore
 .DS_Store
+
+*.p12
+*.jks
+*.aab

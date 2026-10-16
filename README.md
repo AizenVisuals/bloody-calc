@@ -47,7 +47,7 @@ npm start
 
 Abra `http://localhost:8080`.
 
-Para compilar o Android, abra a pasta `android/` no Android Studio ou use JDK 17, Gradle 8.9 e Android SDK 35:
+Para compilar o Android, abra a pasta `android/` no Android Studio ou use JDK 17, Gradle 8.11.1 e Android SDK 36:
 
 ```sh
 cd android
@@ -79,3 +79,9 @@ Estou refinando o projeto com testes automatizados e testes no celular. Compilar
 ## Arquivos dos ícones
 
 As nove variantes Halo usadas pelo app estão em `web/assets/icons/`, em 192 e 512 px, e no Android em 512 px. As nove imagens completas de 1254 × 1254 px enviadas pelo autor estão preservadas como `halo-*-source.png`, substituindo a transferência truncada. A integridade PNG e a correspondência com as variantes do app foram conferidas. Todas as variantes têm verificação automatizada de integridade.
+
+## Preparação para Google Play
+
+A API alvo é 36. A política de privacidade está em Ajustes → Privacidade e em [Português](https://aizenvisuals.github.io/bloody-calc/privacy.html), [English](https://aizenvisuals.github.io/bloody-calc/privacy-en.html) e [Español](https://aizenvisuals.github.io/bloody-calc/privacy-es.html). Suporte: aizenvisuals.apps@gmail.com.
+
+O workflow manual `Play Store candidate` gera um AAB de produção não depurável, assinado com chave de upload separada e protegida em secrets. Ele não publica automaticamente na Play Store. Veja `PUBLICACAO-PLAY.md` e `store/` para materiais e pendências.

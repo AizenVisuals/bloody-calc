@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools platforms;android-35 build-tools;34.0.0'
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
           log-accepted-android-sdk-licenses: false
       - name: Restore the existing signing key from repository secrets
         env:
@@ -33,7 +33,7 @@ jobs:
           echo "HALO_EXISTING_KEYSTORE_PATH=$RUNNER_TEMP/halo-signing.keystore" >> "$GITHUB_ENV"
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.9'
+          gradle-version: '8.11.1'
       - name: Build offline APK
         working-directory: android
         env:

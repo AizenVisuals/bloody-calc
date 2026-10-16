@@ -14,6 +14,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.webkit.*;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.webkit.WebViewAssetLoader;
@@ -23,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 /** Offline UI. No INTERNET permission. Bridge is exposed only to bundled appassets. */
 public final class MainActivity extends Activity {
     private WebView web;
+    private OnBackInvokedCallback backCallback;
     private volatile String appLanguage = java.util.Locale.getDefault().getLanguage();
     private String localized(String pt, String en, String es) { return "en".equals(appLanguage) ? en : "es".equals(appLanguage) ? es : pt; }
     private ValueCallback<Uri[]> fileCallback;
@@ -33,12 +37,22 @@ public final class MainActivity extends Activity {
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(0xff08080a);
         root.setOnApplyWindowInsetsListener((v, insets) -> {
-            v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
+                v.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+            } else {
+                v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+            }
             return insets;
         });
         web = new WebView(this);
         root.addView(web, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(root);
+        root.requestApplyInsets();
+        if (Build.VERSION.SDK_INT >= 33) {
+            backCallback = this::handleBack;
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, backCallback);
+        }
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -114,6 +128,11 @@ public final class MainActivity extends Activity {
         if(request==PICK_FILE && fileCallback!=null){ fileCallback.onReceiveValue(result==RESULT_OK && data!=null && data.getData()!=null?new Uri[]{data.getData()}:null);fileCallback=null; }
         if(request==SAVE_FILE){if(result==RESULT_OK && data!=null && data.getData()!=null && pendingJson!=null){try(OutputStream out=getContentResolver().openOutputStream(data.getData())){if(out!=null)out.write(pendingJson.getBytes(StandardCharsets.UTF_8));Toast.makeText(this,localized("Backup salvo.", "Backup saved.", "Copia de seguridad guardada."),Toast.LENGTH_SHORT).show();}catch(Exception e){Toast.makeText(this,localized("Não foi possível salvar.", "Could not save.", "No se pudo guardar."),Toast.LENGTH_LONG).show();}}pendingJson=null;}
     }
-    @Override public void onBackPressed() { web.evaluateJavascript("window.bloodyBack ? window.bloodyBack() : false", value -> { if(!"true".equals(value)) super.onBackPressed(); }); }
-    @Override protected void onDestroy() { if(web!=null){web.removeJavascriptInterface("Android");web.destroy();}super.onDestroy(); }
+    private void handleBack() {
+        web.evaluateJavascript("window.bloodyBack ? window.bloodyBack() : false", value -> {
+            if (!"true".equals(value)) finish();
+        });
+    }
+    @Override public void onBackPressed() { handleBack(); }
+    @Override protected void onDestroy() { if(Build.VERSION.SDK_INT>=33 && backCallback!=null)getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(backCallback);if(web!=null){web.removeJavascriptInterface("Android");web.destroy();}super.onDestroy(); }
 }

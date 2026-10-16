@@ -1,0 +1,71 @@
+name: Play Store candidate
+on:
+  workflow_dispatch:
+    inputs:
+      version_code:
+        description: 'Unique increasing version code (greater than previous Play uploads)'
+        required: true
+        default: '1000'
+        type: string
+      version_name:
+        description: 'Public version name'
+        required: true
+        default: '2.1.0'
+        type: string
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_NUMBER: ${{ inputs.version_code }}
+      VERSION_NAME: ${{ inputs.version_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate release version
+        run: |
+          python3 - <<'PY'
+          import os, re
+          value = os.environ['BUILD_NUMBER']
+          assert value.isdigit() and 1 <= int(value) <= 2100000000
+          assert re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', os.environ['VERSION_NAME'])
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm test
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+          log-accepted-android-sdk-licenses: false
+      - name: Restore protected upload key
+        env:
+          HALO_SIGNING_BASE64: ${{ secrets.HALO_UPLOAD_KEYSTORE_BASE64 }}
+          HALO_SIGNING_CERT_SHA256: ${{ secrets.HALO_UPLOAD_CERT_SHA256 }}
+          HALO_KEY_STORE_PASSWORD: ${{ secrets.HALO_UPLOAD_STORE_PASSWORD }}
+          HALO_KEY_ALIAS: halo-upload
+        run: |
+          python3 scripts/restore-signing.py "$RUNNER_TEMP/halo-upload.p12"
+          echo "HALO_UPLOAD_KEYSTORE_PATH=$RUNNER_TEMP/halo-upload.p12" >> "$GITHUB_ENV"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Build signed non-debuggable app bundle and lint
+        working-directory: android
+        env:
+          HALO_UPLOAD_STORE_PASSWORD: ${{ secrets.HALO_UPLOAD_STORE_PASSWORD }}
+          HALO_UPLOAD_KEY_PASSWORD: ${{ secrets.HALO_UPLOAD_KEY_PASSWORD }}
+        run: gradle --no-daemon :app:bundleRelease :app:lintRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Halo-Calc-Play-candidate
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+      - name: Remove private upload material from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/halo-upload.p12"

@@ -24,8 +24,8 @@ def restore(destination):
             stream.write(payload)
         result = subprocess.run(
             ['keytool', '-exportcert', '-keystore', str(destination),
-             '-storepass', 'android', '-alias', 'androiddebugkey'],
-            capture_output=True, check=True,
+             '-storepass:env', 'HALO_KEY_STORE_PASSWORD', '-alias', os.environ.get('HALO_KEY_ALIAS', 'androiddebugkey')],
+            capture_output=True, check=True, env={**os.environ, 'HALO_KEY_STORE_PASSWORD': os.environ.get('HALO_KEY_STORE_PASSWORD', 'android')},
         )
         if hashlib.sha256(result.stdout).hexdigest() != expected:
             raise ValueError('Signing certificate differs from the preserved APK identity.')

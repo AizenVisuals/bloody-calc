@@ -1,0 +1,8 @@
+{
+  "title": "Halo Calc",
+  "short_description": "A calculator that matches your phone.",
+  "full_description": "Halo Calc brings a calculator, scientific panel and stopwatch into an interface you can personalize.\n\nChoose from nine themes, including light, pastel and graphite options. Pick one of nine app icons independently of the calculator theme.\n\n• Percentages, parentheses and real-time results.\n• Scientific panel with powers, square roots and trigonometric functions.\n• Searchable history, favorites and reusable calculations.\n• Stopwatch with pause, resume and up to 100 laps.\n• Portuguese, English and Spanish, with automatic or manual language selection.\n• Text size, optional button sounds and vibration.\n• JSON backup export and restoration.\n\nThe Android app works offline, with no ads and no account registration. Your history and preferences stay on your device.\n\nHold the delete button for 1.5 seconds to clear the expression. A short tap deletes one character.\n\nSome scientific functions and divisions produce approximate results, marked with ≈. The stopwatch follows the device clock; manually changing it may affect timing.\n\nCreated by Aizen Visuals.",
+  "support_email": "aizenvisuals.apps@gmail.com",
+  "category_suggestion": "Tools",
+  "privacy_policy": "https://aizenvisuals.github.io/bloody-calc/privacy-en.html"
+}

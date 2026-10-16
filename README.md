@@ -2,6 +2,8 @@
 
 Criei o Halo Calc porque queria uma calculadora que fosse agradável de usar e tivesse uma identidade própria. O arco luminoso virou o centro do visual, e o resto foi pensado para deixar a conta em primeiro lugar.
 
+A abertura acompanha o tema salvo e permanece visível por pelo menos 1 segundo após ser desenhada.
+
 O app é gratuito, funciona offline e não tem anúncios nem cadastro. É um projeto da **Aizen Visuals**.
 
 ## Instalar no Android
@@ -17,10 +19,11 @@ Esta versão é de teste, distribuída diretamente pelo GitHub. Ainda não publi
 - Calculadora com porcentagem, parênteses e resultado em tempo real.
 - Painel científico separado, com potência, raiz, funções trigonométricas e ângulos em graus ou radianos.
 - Histórico com busca, favoritos e reutilização de contas.
+- Toque curto em apagar remove um caractere; segurar por 1,5 segundo limpa a expressão.
 - Cronômetro com pausa, retomada e até 100 voltas. O tempo continua ao sair e voltar ao app.
-- Cinco temas: Crimson, Mono, Amethyst, Glacier e Lime Cream.
+- Nove temas, incluindo opções claras em ciano, rosa pastel, bege e lavanda, além do Graphite fosco. A seleção fica em Ajustes → Temas, com prévia.
 - Três tamanhos de texto, som dos botões e vibração opcional.
-- Cinco opções de ícone para a tela inicial.
+- Nove ícones Halo para a tela inicial, escolhidos em Ajustes → Ícones sem alterar o tema.
 - Backup e restauração em JSON.
 
 A tela da calculadora se ajusta à altura disponível, sem precisar rolar para encontrar os últimos botões. Em telas horizontais baixas, visor e teclado ficam lado a lado. Histórico e ajustes têm rolagem própria.

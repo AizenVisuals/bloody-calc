@@ -69,8 +69,8 @@ public final class MainActivity extends Activity {
         web.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }
     public final class Bridge {
-        private final String[] keys = {"crimson", "mono", "seal", "monogram", "eclipse"};
-        private final String[] aliases = {"IconCrimson", "IconMono", "IconSeal", "IconMonogram", "IconEclipse"};
+        private final String[] keys = {"crimson", "mono", "amethyst", "glacier", "lime", "cyan", "rose", "graphite", "lavender"};
+        private final String[] aliases = {"IconCrimson", "IconMono", "IconSeal", "IconMonogram", "IconEclipse", "IconCyan", "IconRose", "IconGraphite", "IconLavender"};
         @JavascriptInterface public String getLauncherIcon() {
             PackageManager pm = getPackageManager();
             for (int i = 0; i < keys.length; i++) {

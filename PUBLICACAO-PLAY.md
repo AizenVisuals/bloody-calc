@@ -39,7 +39,7 @@ A fonte oficial confirma que apps pessoais criados no Google AI Studio podem ser
 
 ## Verificação técnica desta preparação
 
-- AAB release local validado pelo bundletool 1.18.3: applicationId dev.bloody.calc, targetSdk 36, não depurável, sem INTERNET, sem bibliotecas nativas, assinado pela chave de upload de produção. Versão candidata 2.1.0 / código 1000.
+- AAB release do GitHub Actions (execução 38906448975) baixado e validado pelo bundletool 1.18.3: applicationId dev.bloody.calc, targetSdk 36, não depurável, sem INTERNET, sem bibliotecas nativas, assinado pela chave de upload de produção. Versão candidata 2.1.0 / código 1000.
 - Navegação Voltar migrou para OnBackInvokedCallback em Android 13+, com fallback nas versões anteriores. Insets incluem barras, recortes e teclado em API 30+.
 - Nove ícones adaptativos mantêm as nove artes e aliases anteriores. Regras explícitas excluem dados de cópia automática e transferência Android 12+.
 - Lint release: zero erros; avisos remanescentes incluem bibliotecas não atualizadas, JavaScript necessário para conteúdo local, atributos ignorados em APIs antigas, recursos antigos preservados e ícone monocromático opcional. Sem baseline para ocultar erros.
@@ -48,3 +48,5 @@ A fonte oficial confirma que apps pessoais criados no Google AI Studio podem ser
 - Conta Play Console, verificação de identidade/aparelho, taxa, formulários, Play App Signing, teste fechado e aprovação continuam dependentes do proprietário/Google. Nenhum pagamento, aceite de termos ou publicação no Console foi feito.
 
 Avaliação: candidato para testes internos/fechados, não lançamento público confirmado. Vale testar a proposta visual e personalização com usuários reais antes de investir na publicação pública. Plus permanece fora do produto.
+
+Verificação final: workflow Play Store candidate concluído com sucesso; assinatura de upload conferida e arquivos web do AAB idênticos ao repositório. Cópia em entrega/play-candidate/app-release.aab (fora do Git). SHA256: `5092459f9924dbe328dfc0ea418ad4440e41caa95b5a4454f02aff7fe28f25e3`.

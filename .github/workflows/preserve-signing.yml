@@ -1,0 +1,53 @@
+name: Preserve existing Halo signing key
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: halo-calc-personal-debug-keystore-v2
+          fail-on-cache-miss: true
+      - name: Encrypt existing key for its owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          cat > "$RUNNER_TEMP/owner-public.pem" <<'PUBLIC_CERT'
+          -----BEGIN CERTIFICATE-----
+          MIIELTCCApWgAwIBAgIUDXnUfD9/P6bJSbMWjZ9iMeS6MIEwDQYJKoZIhvcNAQEL
+          BQAwJjEkMCIGA1UEAwwbSGFsbyBDYWxjIHNpZ25pbmcgbWlncmF0aW9uMB4XDTI2
+          MTAxNjEyNTk0OVoXDTI2MTAxODEyNTk0OVowJjEkMCIGA1UEAwwbSGFsbyBDYWxj
+          IHNpZ25pbmcgbWlncmF0aW9uMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKC
+          AYEA47MM2uYxqIwPGZ1MZ0G7BLgQOHSkL8RXBF4FSBSjl9aRhmG8O3Jv+wXT93iw
+          6bEfCQfTHQz7VjLkPIuAyAGp6CpaRYIQS8Ozf4kL9wYQvruoT2Dq67Kv36cOyfzQ
+          FbDvbM3+uhE4xPpAytptdOcpjD+Z/3tyEOG6eZVrHLbaaIPZSJf1zvZudIssmeTs
+          kzY4dray95vKn9JnxZAcXLOe3xMxhH1qtgnK3BmOFQCq25fFbMWI4MBaSgR3TobN
+          W02QqeL13xvzZ68woikwpoL54FP/IIVq/Zp0fzlnBP6g+PAFoYGPhJ48K3QvsCdn
+          MU28TjQSJcb31Y2zs7K9zDPQ49qdnjz56SJklZe3EpsFHRXNogF9L7BjWaiy0cbn
+          fCAGBC35Iyld2Xnlj6AKRv++uBEhXs+6TW0av2PZ4CDtwb5EIasRNYxIUp7FikwT
+          eES9eR0d1wX5wo5zwlahMwKvAy3dWL50Ocu081KAE8GpxLsaKkW/t6hq1BSZU/t7
+          ocR5AgMBAAGjUzBRMB0GA1UdDgQWBBQ5qbtFm5jPYsevuKt9dq8wVqwLrzAfBgNV
+          HSMEGDAWgBQ5qbtFm5jPYsevuKt9dq8wVqwLrzAPBgNVHRMBAf8EBTADAQH/MA0G
+          CSqGSIb3DQEBCwUAA4IBgQDNPy8HcNhVazaMEkOqPnDBW0mB8StXtDQzjfrnTbMO
+          qumhwWyY6SNwI0odl+8TGXDHvVRpGjfRVALKKUDuCg+5Mv7TMuvWN7i4X7bnXRTm
+          0Yte/8A+OO4MTN1wpCbJjCmTvA6n79ywhHiHSoaCdZ7Wgowhj7/fzYYIs0QSRvfa
+          60KCRvLTHYrzUVGcAzYgE3fct+Heg3Bk1dC+Gx5nXmVCChLBV/OWPC2VcGHl2DgK
+          ss7aK0AZsQgFqjlaV0GvxZNgvgxmE+ts9GWsD30GZG4IcotKRLFgYcCeilexvHTa
+          VsgoM65p/0c8z8RtFZDkf41trWXt6V3ILXx9+im/c26SIYd962fzBV4CH1HFHxM9
+          9f5TsODuQYNr6QHf7qs1mjQOfOLEQA4Nyt8bcYleDujSETtHMK7yTMbkT6mm3aLD
+          P9sHVm5f7tp2h13Glk8/+4oeMsyImvRxA4K0n2Zhkawcuz4k1Fho0zSH6lo6C2BO
+          5mIgaIT4SqfSCZOqVIlK4XY=
+          -----END CERTIFICATE-----
+          PUBLIC_CERT
+          test -s "$HOME/.android/debug.keystore"
+          openssl cms -encrypt -binary -aes256 -in "$HOME/.android/debug.keystore" -out "$RUNNER_TEMP/halo-signing-key.p7m" -outform DER "$RUNNER_TEMP/owner-public.pem"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-halo-signing-key
+          path: ${{ runner.temp }}/halo-signing-key.p7m
+          retention-days: 1

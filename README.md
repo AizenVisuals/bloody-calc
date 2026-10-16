@@ -77,4 +77,4 @@ Estou refinando o projeto com testes automatizados e testes no celular. Compilar
 
 ## Arquivos dos ícones
 
-As nove variantes Halo usadas pelo app estão em `web/assets/icons/`, em 192 e 512 px, e no Android em 512 px. Os arquivos `halo-*-source.png` da transferência anterior estavam truncados e foram retirados; os originais de alta resolução ainda não foram recuperados. As imagens usadas na interface e na instalação foram preservadas e têm verificação automatizada de integridade.
+As nove variantes Halo usadas pelo app estão em `web/assets/icons/`, em 192 e 512 px, e no Android em 512 px. As nove imagens completas de 1254 × 1254 px enviadas pelo autor estão preservadas como `halo-*-source.png`, substituindo a transferência truncada. A integridade PNG e a correspondência com as variantes do app foram conferidas. Todas as variantes têm verificação automatizada de integridade.

@@ -37,12 +37,12 @@ jobs:
           BUILD_NUMBER: ${{ github.run_number }}
         run: gradle --no-daemon :app:assembleDebug
       - name: Name APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk Bloody-Calc.apk
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Halo-Calc.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Bloody-Calc-APK
-          path: Bloody-Calc.apk
+          name: Halo-Calc-APK
+          path: Halo-Calc.apk
       - name: Publish personal test APK
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "build-${{ github.run_number }}" Bloody-Calc.apk --title "Bloody Calc · build ${{ github.run_number }}" --notes "APK de teste para uso pessoal. Não publicado na Play Store. Faça backup no app antes de trocar instalações." --prerelease
+        run: gh release create "build-${{ github.run_number }}" Halo-Calc.apk --title "Halo Calc · build ${{ github.run_number }}" --notes "APK de teste para uso pessoal. Não publicado na Play Store. Faça backup no app antes de trocar instalações." --prerelease

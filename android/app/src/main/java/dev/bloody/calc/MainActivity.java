@@ -98,7 +98,7 @@ public final class MainActivity extends Activity {
             } catch (Exception e) { return false; }
         }
 
-        @JavascriptInterface public void copyText(String text) { runOnUiThread(() -> ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Bloody Calc", text))); }
+        @JavascriptInterface public void copyText(String text) { runOnUiThread(() -> ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Halo Calc", text))); }
         @JavascriptInterface public void shareText(String text) { runOnUiThread(() -> { Intent intent = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text); startActivity(Intent.createChooser(intent, "Compartilhar")); }); }
         @JavascriptInterface public void vibrate() { Vibrator v = (Vibrator)getSystemService(VIBRATOR_SERVICE); if (v != null && v.hasVibrator()) v.vibrate(VibrationEffect.createOneShot(9, VibrationEffect.DEFAULT_AMPLITUDE)); }
         @JavascriptInterface public void saveJson(String filename, String json) { if(json.length()>5000000)return; runOnUiThread(() -> { pendingJson = json; Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("application/json").putExtra(Intent.EXTRA_TITLE, filename.replaceAll("[^a-zA-Z0-9._-]", "_")); startActivityForResult(intent, SAVE_FILE); }); }

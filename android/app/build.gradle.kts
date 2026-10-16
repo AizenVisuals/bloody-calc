@@ -7,7 +7,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "1.1." + (System.getenv("BUILD_NUMBER") ?: "0")
+        versionName = "2.0." + (System.getenv("BUILD_NUMBER") ?: "0")
     }
     sourceSets["main"].assets.srcDirs("../../web")
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <application android:label="Bloody Calc" android:icon="@drawable/ic_wing" android:theme="@style/AppTheme" android:allowBackup="false" android:usesCleartextTraffic="false" android:supportsRtl="true">
+        <activity android:name=".MainActivity" android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden">
+
+        </activity>
+        <activity-alias android:name=".IconCrimson" android:enabled="true" android:exported="true" android:icon="@drawable/icon_crimson" android:label="Bloody Calc" android:targetActivity=".MainActivity"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+        <activity-alias android:name=".IconMono" android:enabled="false" android:exported="true" android:icon="@drawable/icon_mono" android:label="Bloody Calc" android:targetActivity=".MainActivity"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+        <activity-alias android:name=".IconSeal" android:enabled="false" android:exported="true" android:icon="@drawable/icon_seal" android:label="Bloody Calc" android:targetActivity=".MainActivity"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+        <activity-alias android:name=".IconMonogram" android:enabled="false" android:exported="true" android:icon="@drawable/icon_monogram" android:label="Bloody Calc" android:targetActivity=".MainActivity"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+        <activity-alias android:name=".IconEclipse" android:enabled="false" android:exported="true" android:icon="@drawable/icon_eclipse" android:label="Bloody Calc" android:targetActivity=".MainActivity"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity-alias>
+    </application>
+</manifest>

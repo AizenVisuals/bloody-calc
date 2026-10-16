@@ -1,0 +1,45 @@
+name: Android APK
+on:
+  push:
+    branches: [main]
+    paths: ['web/**', 'android/**', 'tests/**', 'package.json', '.github/workflows/android.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm test
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: bloody-calc-personal-debug-keystore-v1
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build offline APK
+        working-directory: android
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: gradle --no-daemon :app:assembleDebug
+      - name: Name APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Bloody-Calc.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Bloody-Calc-APK
+          path: Bloody-Calc.apk
+      - name: Publish personal test APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "build-${{ github.run_number }}" Bloody-Calc.apk --title "Bloody Calc · build ${{ github.run_number }}" --notes "APK de teste para uso pessoal. Não publicado na Play Store. Faça backup no app antes de trocar instalações." --prerelease

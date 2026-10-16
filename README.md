@@ -74,3 +74,7 @@ A interface está em `web/`, o interpretador matemático em `web/engine.js` e o 
 Estou refinando o projeto com testes automatizados e testes no celular. Compilar sem erros não substitui verificar o comportamento no aparelho.
 
 **Aizen Visuals**
+
+## Arquivos dos ícones
+
+As nove variantes Halo usadas pelo app estão em `web/assets/icons/`, em 192 e 512 px, e no Android em 512 px. Os arquivos `halo-*-source.png` da transferência anterior estavam truncados e foram retirados; os originais de alta resolução ainda não foram recuperados. As imagens usadas na interface e na instalação foram preservadas e têm verificação automatizada de integridade.
